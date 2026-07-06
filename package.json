@@ -1,0 +1,16 @@
+JSON
+{
+  "name": "reaperaa-optimizer",
+  "version": "1.0.0",
+  "main": "index.html",
+  "window": {
+    "title": "Reaperaa",
+    "toolbar": false,
+    "frame": false,
+    "transparent": true,
+    "width": 380,
+    "height": 480,
+    "position": "center",
+    "resizable": false
+  }
+}
