@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reaperaa</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at center, #0d1527 0%, #05070f 100%);
+            perspective: 1000px;
+        }
+        .logo-font { font-family: 'Orbitron', sans-serif; letter-spacing: 0.15em; }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 overflow-hidden relative select-none">
+
+    <div id="glowBg" class="absolute w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[100px] top-1/4 left-1/4 -z-10 transition-transform duration-300 ease-out"></div>
+
+    <div id="appCard" class="w-full max-w-md bg-[#0d0e12]/90 border border-gray-800/60 rounded-[2rem] p-6 shadow-2xl backdrop-blur-md relative transition-transform duration-200 ease-out">
+        
+        <button class="absolute top-5 right-5 text-gray-500 hover:text-white transition bg-gray-900/50 border border-gray-800 p-1 rounded-md">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+
+        <div class="text-center mt-4 mb-8">
+            <h1 class="text-white text-3xl font-bold logo-font tracking-widest bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">REAPERAA</h1>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            
+            <button onclick="openNetModal()" class="flex flex-col items-start p-4 bg-[#14161d]/90 border border-gray-800/80 hover:border-cyan-500/50 rounded-2xl transition-all group text-left">
+                <i data-lucide="terminal" class="w-5 h-5 text-cyan-400 mb-3 group-hover:scale-110 transition-transform"></i>
+                <span class="text-xs font-semibold text-gray-400 tracking-wider">SET POWERSHELL</span>
+            </button>
+
+            <button onclick="simulateRun('SET TCP')" class="flex flex-col items-start p-4 bg-[#14161d]/90 border border-gray-800/80 hover:border-cyan-500/50 rounded-2xl transition-all group text-left">
+                <i data-lucide="zap" class="w-5 h-5 text-cyan-400 mb-3 group-hover:scale-110 transition-transform"></i>
+                <span class="text-xs font-semibold text-gray-400 tracking-wider">SET TCP</span>
+            </button>
+
+            <button onclick="simulateRun('SET NVIDIA')" class="flex flex-col items-start p-4 bg-[#14161d]/90 border border-gray-800/80 hover:border-cyan-500/50 rounded-2xl transition-all group text-left">
+                <i data-lucide="cpu" class="w-5 h-5 text-cyan-400 mb-3 group-hover:scale-110 transition-transform"></i>
+                <span class="text-xs font-semibold text-gray-400 tracking-wider">SET NVIDIA</span>
+            </button>
+
+            <button onclick="simulateRun('SET REG')" class="flex flex-col items-start p-4 bg-[#14161d]/90 border border-gray-800/80 hover:border-cyan-500/50 rounded-2xl transition-all group text-left">
+                <i data-lucide="key" class="w-5 h-5 text-cyan-400 mb-3 group-hover:scale-110 transition-transform"></i>
+                <span class="text-xs font-semibold text-gray-400 tracking-wider">SET REG</span>
+            </button>
+
+            <button onclick="simulateRun('CLEAN')" class="flex flex-col items-start p-4 bg-[#14161d]/90 border border-gray-800/80 hover:border-cyan-500/50 rounded-2xl transition-all group text-left">
+                <i data-lucide="trash-2" class="w-5 h-5 text-cyan-400 mb-3 group-hover:scale-110 transition-transform"></i>
+                <span class="text-xs font-semibold text-gray-400 tracking-wider">CLEAN</span>
+            </button>
+
+            <button onclick="window.open('https://discord.com')" class="flex flex-col items-start p-4 bg-[#14161d]/90 border border-gray-800/80 hover:border-purple-500/50 rounded-2xl transition-all group text-left">
+                <i data-lucide="message-square" class="w-5 h-5 text-purple-400 mb-3 group-hover:scale-110 transition-transform"></i>
+                <span class="text-xs font-semibold text-gray-400 tracking-wider">DISCORD</span>
+            </button>
+
+        </div>
+
+        <div class="flex items-center justify-between border-t border-gray-900 pt-4 text-[10px] tracking-widest text-gray-500 font-bold">
+            <div class="flex items-center gap-2">
+                <span id="statusDot" class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse"></span>
+                <span id="statusText">SYSTEM READY</span>
+            </div>
+            <div class="flex gap-1.5">
+                <span class="w-4 h-1 bg-gray-800 rounded-full"></span>
+                <span class="w-4 h-1 bg-cyan-500 rounded-full"></span>
+                <span class="w-4 h-1 bg-gray-800 rounded-full"></span>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="netModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50">
+        <div class="w-[300px] bg-[#0d0e12] border border-gray-800/80 rounded-2xl p-6 text-center shadow-2xl">
+            <h3 class="text-white text-sm font-semibold mb-1">เลือกการเชื่อมต่อ</h3>
+            <p class="text-gray-500 text-[11px] mb-5">จะ optimize การ์ดเน็ตตัวไหน?</p>
+            
+            <button onclick="selectNet('LAN (Ethernet)')" class="w-full py-3 mb-2 bg-[#14161d] border border-gray-800 hover:border-cyan-500 text-cyan-400 text-xs font-semibold rounded-xl flex items-center justify-center gap-2 transition-all">
+                🖥️ LAN (Ethernet)
+            </button>
+            
+            <button onclick="selectNet('Wi-Fi')" class="w-full py-3 mb-5 bg-[#14161d] border border-gray-800 hover:border-cyan-500 text-cyan-400 text-xs font-semibold rounded-xl flex items-center justify-center gap-2 transition-all">
+                📶 Wi-Fi
+            </button>
+            
+            <button onclick="closeNetModal()" class="text-gray-500 hover:text-white text-xs font-medium transition">
+                ยกเลิก
+            </button>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // 1. ระบบมิติ Parallax เอียงตามเมาส์
+        const card = document.getElementById('appCard');
+        const glow = document.getElementById('glowBg');
+
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
+            glow.style.transform = `translate(${xAxis * 1.5}px, ${yAxis * 1.5}px)`;
+        });
+
+        document.addEventListener('mouseleave', () => {
+            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+            glow.style.transform = `translate(0px, 0px)`;
+        });
+
+        // 2. ระบบเปิด-ปิด ป๊อปอัพเลือกการเชื่อมต่อ
+        const modal = document.getElementById('netModal');
+        function openNetModal() { modal.classList.remove('hidden'); }
+        function closeNetModal() { modal.classList.add('hidden'); }
+
+        function selectNet(type) {
+            closeNetModal();
+            simulateRun('POWERSHELL (' + type + ')');
+        }
+
+        // 3. ระบบจำลองการรันสถานะ (RUNNING -> OPTIMIZED -> READY)
+        function simulateRun(name) {
+            const statusText = document.getElementById('statusText');
+            const statusDot = document.getElementById('statusDot');
+            
+            statusText.innerText = "RUNNING: " + name;
+            statusText.className = "text-yellow-400 animate-pulse";
+            statusDot.className = "w-1.5 h-1.5 bg-yellow-400 rounded-full animate-ping";
+
+            setTimeout(() => {
+                statusText.innerText = "SYSTEM OPTIMIZED";
+                statusText.className = "text-cyan-400";
+                statusDot.className = "w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse";
+                
+                setTimeout(() => {
+                    statusText.innerText = "SYSTEM READY";
+                    statusText.className = "text-gray-500";
+                }, 3000);
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
