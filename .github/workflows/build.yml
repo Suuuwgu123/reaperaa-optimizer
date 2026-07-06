@@ -1,0 +1,27 @@
+name: Build Reaperaa EXE
+on:
+  push:
+    branches: [ main, master ]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-size: 18
+
+    - name: Install NW.js Builder
+      run: npm install -g nwjs-builder-phoenix
+
+    - name: Build EXE Package
+      run: nwb build --tasks win-x64 .
+
+    - name: Upload EXE Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: Reaperaa-Program
+        path: dist/
